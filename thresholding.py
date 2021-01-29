@@ -47,15 +47,17 @@ def thresh_channel(ch_name, sig, std_multipl, fs):
 
 
     #create detection df
+    #TODO fix stop times
     res = pd.DataFrame(data = {'channel': [ch_name]*len(starts), 'start_time': starts, 'stop_time': stops,
                                 'multipl': [std_multipl]*len(starts)})
 
     return res
 
 
-def thresh_file(file, std_multipl=12):
+def thresh_file(file, std_multipl=13):
 
-    std_multipl = 12
+    print("Computing file " + file.split('/')[-1])
+
     #create results dataframe
     res = pd.DataFrame()
 
@@ -70,3 +72,13 @@ def thresh_file(file, std_multipl=12):
 
     res['file'] = [file.split('/')[-1]]*len(res)
 
+    return res
+
+
+def det_files(files, std_multipl=13):
+
+    res_df = pd.DataFrame()
+    for file in files:
+
+        file_res = thresh_file(file, std_multipl=std_multipl)
+        res_df = res_df.append(file_res)
