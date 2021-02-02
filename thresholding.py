@@ -14,13 +14,6 @@ if not os.path.exists(results_path):
     os.mkdir(results_path)
 
 
-env_path = '/media/vojtech/DATADRIVE4/hfo_envelopes/'
-
-files = glob.glob(env_path + '/*/*/*.h5')
-
-
-file = files[3]
-
 
 
 def thresh_channel(ch_name, sig, std_multipl, fs):
