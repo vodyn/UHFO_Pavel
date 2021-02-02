@@ -1,9 +1,11 @@
 
 
-import process_detections
+# import process_detections
 import pandas as pd
 import thresholding
 import glob
+from datetime import date
+import os
 
 
 today = date.today()
@@ -22,7 +24,7 @@ i=0
 while (i+2)*chunk <= len(files):
     thresh_data = thresholding.det_files(files[i*chunk:(i+1)*100], std_multipl=13)
     thresh_data.to_pickle(results_path + 'thresh_data_' + str(i) + '.pkl')
-    i=+1
+    i+=1
 
 thresh_data = thresholding.det_files(files[i*chunk:len(files)], std_multipl=13)
 thresh_data.to_pickle(results_path + 'thresh_data_' + str(i) + '.pkl')
