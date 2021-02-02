@@ -26,7 +26,7 @@ file = files[3]
 def thresh_channel(ch_name, sig, std_multipl, fs):
 
     std_dev = np.std(sig)
-    indexes = sig > (std_multip l *std_dev)
+    indexes = sig > (std_multipl *std_dev)
 
     det_sig = np.zeros(len(sig))
     det_sig[indexes] = 1
@@ -34,7 +34,7 @@ def thresh_channel(ch_name, sig, std_multipl, fs):
     stops = np.where(det_sig - np.append(det_sig[1:], det_sig[-1]) == 1)[0]
 
     # if det_sig starts with 1, start at the beginning has to be added
-    if det_sig[0 ]= =1:
+    if det_sig[0] == 1:
         starts = np.append(0, starts)
     if det_sig[-1] == 1:
         stops = np.append(stops, len(det_sig ) -1)
@@ -45,8 +45,8 @@ def thresh_channel(ch_name, sig, std_multipl, fs):
     elif len(starts ) >len(stops):
          starts = starts[1:]
 
-    starts = start s /f s *1e6
-    stops = stop s /f s *1e6
+    starts = starts /fs *1e6
+    stops = stops /fs *1e6
 
     # create detection df
     res = pd.DataFrame(data = {'channel': [ch_name ] *len(starts), 'start_time': starts, 'stop_time': stops,
@@ -68,8 +68,8 @@ def thresh_file(file, std_multipl=13):
     for ch_name in ch_names:
 
         sig = data[ch_names.index(ch_name) ,:]
-        res = thresh_channel(ch_name, data[ch_names.index(ch_name), :], std_multipl, fs)
-        res = res.append(res)
+        res_appendix = thresh_channel(ch_name, data[ch_names.index(ch_name), :], std_multipl, fs)
+        res = res.append(res_appendix)
 
     res['file'] = [file.split('/')[-1] ] *len(res)
 
@@ -83,3 +83,5 @@ def det_files(files, std_multipl=13):
 
         file_res = thresh_file(file, std_multipl=std_multipl)
         res_df = res_df.append(file_res)
+
+    return res_df
